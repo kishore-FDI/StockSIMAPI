@@ -1,0 +1,7 @@
+// src/events/types.ts
+export const EVENTS = {
+  ORDER_PLACED: "ORDER_PLACED",
+  ORDER_FILLED: "ORDER_FILLED",
+  ORDER_CANCELLED: "ORDER_CANCELLED",
+  TRADE_EXECUTED: "TRADE_EXECUTED",
+} as const;

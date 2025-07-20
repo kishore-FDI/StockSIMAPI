@@ -1,0 +1,77 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\sherm\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add bullmq
+
+PATH: 
+  C:\Program Files\PowerShell\7;c:\Users\sherm\AppData\Local\Programs\cursor\resources\app\bin;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\java8path;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files\Python311\Scripts;C:\Program Files\Python311;C:\Program Files\nodejs;C:\Python312\Scripts;C:\Python312;C:\Users\sherm\AppData\Local\Programs\Python\Python310;C:\Users\sherm\AppData\Local\Programs\Python\Python310\Scripts;C:\_PROJECT_\Hackathon\venv;C:\_PROJECT_\Hackathon\venv\Scripts;C:\Program Files\ImageMagick-7.1.0-Q16-HDRI;C:\Program Files\ImageMagick-7.1.0-Q16;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0;C:\windows\System32\OpenSSH;C:\Program Files\dotnet;C:\Program Files\Git\cmd;C:\Flutter\bin;C:\Users\sherm\AppData\Local\Programs\Eclipse Adoptium\jdk-17.0.7.7-hotspot\bin;C:\Users\sherm\AppData\Local\Programs\Python\Launcher;C:\Users\sherm\AppData\Local\Microsoft\WindowsApps;C:\Users\sherm\AppData\Roaming\npm;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\nodejs\;C:\Program Files\HP\HP One Agent;C:\mongosh\bin;C:\Users\sherm\AppData\Roaming\npm\bin;C:\Program Files\PowerShell\7\;C:\Users\sherm\AppData\Local\Programs\Python\Python310\Scripts\;C:\Users\sherm\AppData\Local\Programs\Python\Python310\;C:\Program Files\MySQL\MySQL Shell 8.0\bin\;C:\Users\sherm\AppData\Local\Programs\Python\Launcher\;C:\Users\sherm\AppData\Local\Programs\Eclipse Adoptium\jdk-17.0.7.7-hotspot\bin;C:\Users\sherm\AppData\Local\Microsoft\WindowsApps;C:\Users\sherm\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files\msys64\ucrt64\bin;C:\Program Files\JetBrains\PyCharm Community Edition 2022.3.1\bin;C:\Users\sherm\AppData\Local\Google\Cloud SDK\google-cloud-sdk\bin;C:\Program Files\heroku\bin;C:\Users\sherm\AppData\Local\Programs\Python\Python36-32;C:\Program Files\JetBrains\IntelliJ IDEA 2023.3.2\bin;C:\Users\sherm\.fly\bin;C:\Users\sherm\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files\nodejs\node_modules\npm\bin;C:\Users\sherm\AppData\Local\Programs\Lens\resources\cli\bin;C:\Users\sherm\AppData\Local\Microsoft\WinGet\Packages\Schniz.fnm_Microsoft.Winget.Source_8wekyb3d8bbwe;C:\Users\sherm\AppData\Local\Programs\cursor\resources\app\bin;C:\Users\sherm\AppData\Local\Microsoft\WindowsApps;C:\Users\sherm\AppData\Roaming\npm;c:\Users\sherm\AppData\Roaming\Code\User\globalStorage\github.copilot-chat\debugCommand
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  22.14.0
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: EPERM: operation not permitted, unlink 'C:\_PROJECT_\TradingSystem\Practice\api\node_modules\@msgpackr-extract\msgpackr-extract-win32-x64\node.napi.node'
+
+npm manifest: 
+  {
+    "name": "practice",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "prisma": {
+      "schema": "./src/models/prisma/schema.prisma"
+    },
+    "scripts": {
+      "dev": "ts-node-dev src/server.ts",
+      "start": "ts-node src/server.ts",
+      "worker": "ts-node src/worker.ts",
+      "test": "jest",
+      "migrate": "prisma migrate dev",
+      "generate": "prisma generate"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "type": "commonjs",
+    "dependencies": {
+      "@prisma/client": "^6.9.0",
+      "@types/bull": "^3.15.9",
+      "bcrypt": "^6.0.0",
+      "bullmq": "^5.54.2",
+      "cookie-parser": "^1.4.7",
+      "csurf": "^1.2.2",
+      "dotenv": "^16.5.0",
+      "express": "^5.1.0",
+      "express-rate-limit": "^7.5.0",
+      "ioredis": "^5.6.1",
+      "jsonwebtoken": "^9.0.2",
+      "prisma": "^6.9.0",
+      "socket.io": "^4.8.1",
+      "ts-node": "^10.9.2",
+      "ts-node-dev": "^2.0.0",
+      "zod": "^3.25.60"
+    },
+    "devDependencies": {
+      "@types/bcrypt": "^5.0.2",
+      "@types/cookie-parser": "^1.4.9",
+      "@types/csurf": "^1.11.5",
+      "@types/express": "^5.0.2",
+      "@types/jsonwebtoken": "^9.0.9",
+      "@types/node": "^22.15.24",
+      "@types/socket.io": "^3.0.1",
+      "@types/ws": "^8.18.1",
+      "socket.io-client": "^4.8.1",
+      "typescript": "^5.8.3",
+      "ws": "^8.18.2"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
