@@ -1,215 +1,154 @@
-# 📈 Stock Trading Simulator – Backend
+# 🚀 StockSIMAPI – Real-Time Trading Exchange Backend
 
-> 🧠 **From Order Placement to Price Discovery – All in One System**
-
-This backend powers a **real-time stock trading simulator** that goes **beyond basic order management**. It **replicates the full trade lifecycle** from:
-
-- 🛒 **Order request intake**
-- ⚖️ **Order book management**
-- 🤝 **Matching engine execution**
-- 📡 **Price discovery**
-- 💸 **Balance reservation & fund settlement**
-- 📊 **Portfolio updates**
-- 🔄 **Real-time notifications via WebSockets**
-
-This isn’t just a simple CRUD system — it’s a **complete simulation of how a trading exchange operates**, including:
-
-- ⏱ **Price determination** based on order flow
-- 🧮 **Real-time market depth updates**
-- 🧱 **Concurrency-safe execution with row-level locking**
-- 🧰 **Robust state management**
-- 📉 **Partial fills, order priority, and execution fairness**
-
-Just like how exchanges like **Zerodha**, **Upstox**, or **NSE** operate internally, this backend reflects how orders affect market dynamics in real time.
-
---
-
-## 🔥 Key Features (Production-Ready)
-
-| Category              | Feature                                                             |
-| --------------------- | ------------------------------------------------------------------- |
-| 🧠 Matching Engine    | In-memory order matching with full/partial fill handling            |
-| 🧾 Order Lifecycle    | Place, cancel, and execute orders with reservation model            |
-| 🔐 Auth & Security    | JWT-based auth, Access + Refresh tokens, CSRF token enforcement     |
-| 💸 Funds Management   | Reserved wallet & stock quantity tracking (no overspending/selling) |
-| 🧱 Concurrency Safety | Row-level locking + Prisma transactions to prevent race conditions  |
-| 📡 Real-Time Events   | Socket.IO events for trades, orders, and portfolio updates          |
-| ⏳ Job Queue          | BullMQ + Redis to offload and queue matching jobs per stock         |
-| 🚀 Scalable Design    | Loosely-coupled services, horizontal scaling possible               |
-| 🧰 Caching Layer      | Redis caching for frequently accessed stock/order data              |
-| 🧪 Input Validation   | Zod schema validation for robust API safety                         |
-| 🔐 Brute-Force Guard  | Login attempt throttling (rate limiter ready)                       |
-| 📚 Developer Ready    | Clean modular folder structure, Prisma ORM, REST + Socket endpoints |
+Welcome to **StockSIMAPI** – a backend that doesn’t just process orders, but simulates the pulse of a real stock exchange. If you want to learn, build, or extend a trading platform with real-world mechanics, you’re in the right place.
 
 ---
 
-## 🗂️ Folder Structure
+## 🏆 What Makes This Special?
 
-```
-api/
-├── app.ts                # Express app setup
-├── server.ts             # Socket.IO + Express bootstrapping
-│
-├── controllers/          # API logic per route
-├── routes/               # REST route definitions
-├── services/             # Order creation, cancel, reservation logic
-├── models/prisma/        # Prisma client + schema
-│
-├── utils/
-│   ├── matching-engine.ts   # Matching engine logic with locking
-│   ├── errors.util.ts       # Custom error classes
-│   └── zodSchemas.ts        # Input validation schemas
-│
-├── jobs/
-│   ├── queue/               # BullMQ queues (e.g., matchOrders)
-│   ├── processor/           # BullMQ workers
-│   └── config/              # Redis connection config
-│
-├── socket/
-│   ├── index.ts             # Socket.IO server setup
-│   ├── handlers/            # Order/trade event emitters
-│   └── namespaces/          # User + Stock namespaces
-│
-├── events/
-│   ├── emitter.ts           # Node EventEmitter instance
-│   ├── types.ts             # All event constants (e.g. ORDER_FILLED)
-│   └── handlers/            # Socket event listeners (user, stock updates)
-│
-├── middlewares/
-│   ├── auth.ts              # JWT Auth middleware
-│   ├── csrf.ts              # CSRF protection
-│   └── errorHandler.ts      # Unified error handling
-│
-└── .env                     # Environment variables
+- **Full Trade Lifecycle:** From order intake to portfolio update, every step is simulated.
+- **Real-Time Everything:** Orders, trades, and prices update instantly via WebSockets.
+- **Concurrency-Safe:** No race conditions – balances and orders are always accurate.
+- **Production-Ready:** Modular, scalable, and secure by design.
+
+---
+
+## 🏗️ Architecture at a Glance
+
+```mermaid
+flowchart TD
+    User["User/API Client"] -->|"REST/Socket.IO"| App["Express + Socket.IO"]
+    App -->|"Order"| Matching["Matching Engine"]
+    Matching -->|"Result"| DB[("PostgreSQL/Prisma")]
+    App -->|"Events"| Redis[("Redis/BullMQ")]
+    App -->|"Updates"| WebSocket["WebSocket Clients"]
 ```
 
----
-
-## 🧱 Concurrency & Consistency
-
-### ✅ Row-Level Locking (Prisma + PostgreSQL)
-
-- Ensures accurate balance/wallet updates
-- Avoids race conditions in high-frequency environments
-
-### ✅ Transactions Everywhere
-
-- `prisma.$transaction()` ensures atomic writes during matching
-
-### ✅ Reservation Model
-
-- On `buy`: deduct from `wallet` → reserve in `reserved_wallet`
-- On `sell`: lock `reserved_quantity` → fulfill after match
-
-### ✅ In-Memory Matching
-
-- Efficient, deterministic matching logic (FIFO + price-time priority)
-- Finalized state written in DB only after match is confirmed
+- **Express**: Handles REST APIs
+- **Socket.IO**: Real-time events
+- **Prisma + PostgreSQL**: Data & transactions
+- **BullMQ + Redis**: Job queues & caching
 
 ---
 
-## 🔒 Security
+## ⚡ Quickstart
 
-| Mechanism            | Purpose                                   |
-| -------------------- | ----------------------------------------- |
-| ✅ JWT Auth          | Secure stateless sessions                 |
-| ✅ Refresh Tokens    | Auto-refresh via HttpOnly cookies         |
-| ✅ CSRF Token        | Prevents unauthorized cross-site requests |
-| ✅ Input Validation  | All APIs validated with `zod`             |
-| ✅ Brute-Force Guard | Easily extendable via express-rate-limit  |
-| ✅ Role-Based Access | Extendable for admin panels               |
+1. **Clone & Install**
 
----
+   ```bash
+   git clone https://github.com/Sherma-ThangamS/TradingSystemAPI
+   cd TradingSystemAPI
+   npm install
+   ```
 
-## 📡 WebSocket Events via Socket.IO
+2. **Configure Environment**
 
-| Event Type          | Channel / Room     | Payload                           |
-| ------------------- | ------------------ | --------------------------------- |
-| `TRADE_EXECUTED`    | `stock:{stock_id}` | trade details (price, qty, users) |
-| `ORDER_FILLED`      | `user:{user_id}`   | order status, remaining qty       |
-| `ORDER_CANCELLED`   | `user:{user_id}`   | cancelled order ID                |
-| `PORTFOLIO_UPDATED` | `user:{user_id}`   | updated wallet, holdings          |
+   - Copy `.env.example` to `.env` and fill in your secrets.
 
----
+3. **Setup Database**
 
-## 🚀 Setup Instructions
+   ```bash
+   npx prisma migrate dev --name init
+   npx prisma generate
+   ```
 
-### 1. Clone & Install
-
-```bash
-git clone https://github.com/Sherma-ThangamS/TradingSystemAPI
-cd TradingSystemAPI
-npm install
-```
-
-### 2. Configure `.env`
-
-```env
-DATABASE_URL=postgresql://user:pass@localhost:5432/stockdb
-REDIS_URL=redis://localhost:6379
-ACCESS_TOKEN_SECRET=super-secret-access
-REFRESH_TOKEN_SECRET=super-secret-refresh
-PORT=4000
-```
-
-### 3. Set up DB with Prisma
-
-```bash
-npx prisma migrate dev --name init
-npx prisma generate
-```
-
-### 4. Start the Server
-
-```bash
-npm run dev
-```
+4. **Run the Server**
+   ```bash
+   npm run dev
+   ```
 
 ---
 
-## 📦 API Endpoints
+## 🧩 Core Features
 
-| Method   | Route                       | Description                |
-| -------- | --------------------------- | -------------------------- |
-| `POST`   | `/api/orders`               | Place buy/sell order       |
-| `DELETE` | `/api/orders/:id`           | Cancel open order          |
-| `GET`    | `/api/orders`               | List user's orders         |
-| `GET`    | `/api/orders/:id`           | Get specific order details |
-| `GET`    | `/api/stocks/:id/orderbook` | Get order book for a stock |
+### 1. Matching Engine
 
----
+- **How:** In-memory, price-time priority, partial fills.
+- **Why:** Simulates real exchange order matching.
+- **What:** Handles buy/sell, cancels, and executes trades atomically.
 
-## 🧠 Redis Usage
+### 2. Funds & Portfolio Management
 
-- 💡 **BullMQ Queue backend**
-- 📊 **Future: Cache public order book & stock info**
-- 🔄 Easily extendable with Redis Pub/Sub for multi-node WS support
+- **How:** Reservation model (wallet, reserved_wallet, reserved_quantity).
+- **Why:** Prevents overspending/selling, ensures fair settlement.
+- **What:** Updates balances and holdings after every trade.
 
----
+### 3. Real-Time Notifications
 
-## 📚 Educational Value
+- **How:** Socket.IO events for trades, orders, portfolios.
+- **Why:** Users see updates instantly, just like a real trading app.
+- **What:** Custom channels for each user and stock.
 
-This project demonstrates advanced backend engineering concepts:
+### 4. Security & Validation
 
-- Queue-based decoupling (BullMQ)
-- Real-time socket architecture
-- ACID-safe matching engine
-- Event-driven + REST hybrid system
-- Scalable service structure
+- **How:** JWT, refresh tokens, CSRF, Zod validation, rate limiting.
+- **Why:** Keeps your app and users safe.
+- **What:** All endpoints are protected and validated.
 
 ---
 
-## 🏗 Future Roadmap
+## 📡 WebSocket Event Reference
 
-- ⏳ Limit orders with expiration (Time In Force)
-- 🔐 Admin dashboard (NestJS or Next.js)
-- 📈 Historical trade chart APIs
-- 📉 Real P\&L & analytics
-- 📃 Swagger API docs
+| Event               | Channel      | Payload                     |
+| ------------------- | ------------ | --------------------------- |
+| `TRADE_EXECUTED`    | `stock:{id}` | Trade details               |
+| `ORDER_FILLED`      | `user:{id}`  | Order status, remaining qty |
+| `ORDER_CANCELLED`   | `user:{id}`  | Cancelled order ID          |
+| `PORTFOLIO_UPDATED` | `user:{id}`  | Wallet, holdings update     |
 
 ---
 
-## 👨‍💻 Maintained By
+## 🔗 Key API Endpoints
 
-**Kishore Kumar K**
+| Method | Route                       | Description          |
+| ------ | --------------------------- | -------------------- |
+| POST   | `/api/orders`               | Place buy/sell order |
+| DELETE | `/api/orders/:id`           | Cancel open order    |
+| GET    | `/api/orders`               | List user’s orders   |
+| GET    | `/api/orders/:id`           | Get order details    |
+| GET    | `/api/stocks/:id/orderbook` | Get stock order book |
+
+---
+
+## 🛠️ Tech Stack
+
+- **Node.js** (Express)
+- **Prisma** (PostgreSQL)
+- **Redis** (BullMQ, caching)
+- **Socket.IO** (WebSockets)
+- **Zod** (Validation)
+
+---
+
+## 🧠 FAQ
+
+**Q: Can I use this for real trading?**  
+A: No, this is for simulation/education only.
+
+**Q: How do I add new stocks or users?**  
+A: Use the Prisma client or extend the API.
+
+**Q: Can I run this in production?**  
+A: Yes, but review security and scaling for your needs.
+
+---
+
+## 🗺️ Roadmap
+
+- [ ] Limit orders with expiration
+- [ ] Admin dashboard
+- [ ] Historical trade charts
+- [ ] Real P&L analytics
+- [ ] Swagger/OpenAPI docs
+
+---
+
+## 👨‍💻 Maintainer
+
+**Kishore Kumar K**  
 Backend Developer | System Designer | Code Performance Enthusiast
+
+---
+
+**Ready to simulate the markets?**  
+Clone, run, and start trading!
