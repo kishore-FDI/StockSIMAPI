@@ -36,7 +36,7 @@ flowchart TD
 1. **Clone & Install**
 
    ```bash
-   git clone https://github.com/Sherma-ThangamS/TradingSystemAPI
+   git clone https://github.com/Kishore-FDI/StocksSIMAPI
    cd TradingSystemAPI
    npm install
    ```

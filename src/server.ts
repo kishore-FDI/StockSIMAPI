@@ -9,7 +9,7 @@ declare global {
       user?: {
         id: string;
         email: string;
-      }; // or whatever your structure is
+      };
     }
   }
 }
@@ -29,7 +29,7 @@ server.listen(PORT, () => {
 });
 
 // Cleanup on server shutdown
-process.on('SIGTERM', () => {
+process.on("SIGTERM", () => {
   redisSubscriber.quit();
   server.close();
 });
